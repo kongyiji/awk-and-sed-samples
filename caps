@@ -1,0 +1,17 @@
+awk ' # caps - 将第一个单词的首字母改为大写
+# 初始化字符串
+BEGIN {
+    upper="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    lower="abcdefghijklmnopqrstuvwxyz"
+}
+# 对于每个输入行
+{
+# 得到第一个单词的首字母
+    FIRSTCHAR=substr($1, 1, 1)
+# 获取FIRSTCHAR在小写字母数组中的位置，如果为0，忽略
+    if (CHAR=index(lower, FIRSTCHAR))
+        # 改变$1，用位置来检索大写字母
+        $1=substr(upper, CHAR, 1) substr($1,2)
+# 打印记录
+    print $0
+}'

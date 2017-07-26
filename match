@@ -1,0 +1,7 @@
+awk ' # match - 打印匹配行的字符串
+# 对于模式的行
+match($0, pattern) {
+    # 提取匹配中的模式的字符串
+    # 用字符串在$0中的开始位置和长度打印字符串
+    print substr($0, RSTART, RLENGTH)
+}' pattern="$1" $2

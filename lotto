@@ -1,0 +1,42 @@
+awk -v NUM=$1 -v TOPNUM=$2 '
+# lotto - 从y个数中挑选x个随机数
+# 用升序排序数字
+function sort(ARRAY, ELEMENTS, temp, i, j) {
+    for (i=2; i<=ELEMENTS; ++i) {
+        for (j=i; (j-1) in ARRAY && ARRAY[j-1]>ARRAY[j]; --j)
+        {
+            temp=ARRAY[j]
+            ARRAY[j]=ARRAY[j-1]
+            ARRAY[j-1]=temp
+        }
+    }
+    return
+}
+# 主例程
+BEGIN {
+# 测试命令行参数，NUM=$1，挑选多少个数
+# TOPNUM=$2，一系列数中的最后一个
+    if ( NUM<=0 )
+        NUM=6
+    if ( TOPNUM<=0 )
+        TOPNUM=30
+
+# 打印"Pick x of y"
+    printf("Pick %d of %d\n", NUM, TOPNUM)
+# 利用时间和日期作为种子数，只执行一次
+    srand()
+# 循环到有NUM个选择时
+    for (j=1; j<=NUM; ++j) {
+    # 用循环寻找一个还没有被发现的数
+        do {
+            select=1+int(rand()*TOPNUM)
+        } while (select in pick)
+        pick[select]=select
+    }
+# 调用排序函数
+    sort(sortedpick, NUM)
+# 循环访问数组并打印挑选的结果
+    for (j in sortedpick)
+        printf("%s ", sortedpick[j])
+    printf("\n")
+}'

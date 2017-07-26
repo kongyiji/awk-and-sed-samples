@@ -1,0 +1,11 @@
+awk -v TOPNUM=$1 '
+# pick1 - 从y个数据中挑选一个随机数
+# 主例程
+BEGIN {
+# 用当前的时间作种子数生成随机数
+    srand()
+# 取得一个随机数
+    select=1+int(rand()*TOPNUM)
+# 打印挑选的结果
+    print select
+}'

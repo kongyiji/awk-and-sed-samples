@@ -1,0 +1,24 @@
+ls -l $* | awk '
+# filesum：列出文件和总的字节数
+# 输入：由命令“ls -l”生成的长列表
+#1 输出列的标题
+BEGIN { printf("%-20s\t%10s\n", "FILE", "BYTES") }
+#2 测试9个字段，文件以“-”开始
+NF==9 && /^-/ {
+sum+=$5 # 累计文件大小
+++filenum # 累计文件个数
+printf ("%-20s\t%10d\n", $9, $5) # 打印文件名和大小
+}
+#3 测试9个字段，目录由“d”开始
+NF==9 && /^d/ {
+print "<dir>", "\t", $9 # 输出目录名
+}
+#4 测试 ls -lR line ./dir：
+$1 ~ /^\..*:$/ {
+print "\t" $0 # 打印用制表符处理的行
+}
+#5 所有工作已完
+END {
+# 打印所有文件总的大小和文件数目
+printf ("Total: %d bytes (%d files)\n", sum, filenum)
+}'
